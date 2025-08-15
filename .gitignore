@@ -1,1 +1,26 @@
+# Data folders
 data/
+archive/
+split_data/
+
+# Zipped or compressed files
+*.zip
+*.tar
+*.tar.gz
+
+# Model checkpoints and large files
+*.h5
+*.keras
+*.ckpt
+
+# Python virtual environments
+mycnnexenv/
+venv/
+.env/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# System files
+.DS_Store
+Thumbs.db

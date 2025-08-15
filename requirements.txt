@@ -1,0 +1,14 @@
+numpy==1.26.4
+pandas==2.2.2
+matplotlib==3.9.2
+sagemaker>=2.234.0
+boto3>=1.35.36
+tensorflow-macos==2.14.0
+tensorboard==2.14.1
+ml-dtypes==0.2.0
+ipykernel==6.29.5
+opencv-python==4.10.0.84
+imutils==0.5.4
+scikit-learn==1.4.2
+Pillow>=10.3.0
+
