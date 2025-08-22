@@ -1,9 +1,20 @@
 import tensorflow as tf
 import matplotlib.pyplot as plt
 import numpy as np
-import os, argparse, json, ast
+import os, argparse, json, ast, random
 from tensorflow.keras import layers, models
 from sklearn.metrics import confusion_matrix, classification_report
+
+
+os.environ["PYTHONHASHSEED"] = "123"
+os.environ["TF_DETERMINISTIC_OPS"] = "1"     # make GPU ops more deterministic
+os.environ["TF_CUDNN_DETERMINISTIC"] = "1"   # cuDNN convs deterministic
+
+SEED = 123
+random.seed(SEED)
+np.random.seed(SEED)
+tf.random.set_seed(SEED)
+
 
 # turn images into tf datasets
 def build_ds(image_paths, img_size=(256, 256), batch_size=32, shuffle=True):
@@ -24,11 +35,10 @@ def cnn_model(img_size=(256,256), drop=0.4, num_classes=4):
         layers.Rescaling(1.0/255)
     ])
     data_augmentation = tf.keras.Sequential([
-        layers.RandomFlip("horizontal", seed=123),
-        layers.RandomRotation(0.05, seed=123),
-        layers.RandomZoom(0.10, seed=123),
-        layers.RandomTranslation(0.05, 0.05, seed=123),
-        layers.RandomContrast(0.10, seed=123),
+        layers.RandomFlip("horizontal", seed=123),   
+        layers.RandomRotation(0.05, seed=123),       
+        layers.RandomZoom(0.10, seed=123),           
+    
     ])
 
     model = models.Sequential([
@@ -46,7 +56,7 @@ def cnn_model(img_size=(256,256), drop=0.4, num_classes=4):
 
         layers.Conv2D(64, (3,3), activation='relu', padding='same'),
         layers.MaxPooling2D((2, 2)),
-
+        
         layers.Conv2D(64, (3,3), activation='relu', padding='same'),
         layers.MaxPooling2D((2, 2)),
 
@@ -57,9 +67,14 @@ def cnn_model(img_size=(256,256), drop=0.4, num_classes=4):
 
         layers.GlobalAveragePooling2D(),
         layers.Dense(128, activation='relu'),
+
+
         layers.Dropout(drop),
-        layers.Dense(num_classes, activation='softmax'),
+        layers.Dense(4, activation='softmax'),
+
     ])
+
+
 
     model.compile(
         optimizer='adam',
